@@ -1,0 +1,23 @@
+import { renderHome } from "../views/home.js";
+import { renderLogin } from "../views/login.js";
+import { renderDashboard } from "../views/dashboard.js";
+import { renderProfile } from "../views/profile.js";
+import { renderTask } from "../views/tasks.js";
+import { renderTaskForm } from "../views/task-form.js";
+import { renderAdmin } from "../views/admin.js";
+import { renderFound } from "../views/not-found.js";
+import { renderRegister } from "../views/register.js";
+
+export const routes = {
+  "/": renderHome,
+  "/login": renderLogin,
+  "/dashboard": renderDashboard,
+  "/profile": renderProfile,
+  "/tasks": renderTask,
+  "/tasks/new": renderTaskForm,
+  "/admin": renderAdmin,
+  "/register": renderRegister,
+  "/home": renderHome,
+};
+
+export const notFound = renderFound;
