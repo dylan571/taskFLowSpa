@@ -3,6 +3,7 @@ import { routes, notFound } from "./routes.js";
 import { isAuthenticated, isAdmin } from "./guards.js";
 import { setupLogin } from "../views/login.js";
 import { setupTasks } from "../views/tasks.js";
+import { setupTaskForm } from "../views/task-form.js";
 
 const app = document.getElementById("app");
 // Función para navegar a una ruta específica
@@ -13,6 +14,8 @@ export function navigate(path) {
 // Función para renderizar la vista correspondiente a la ruta actual
 export function renderRoute() {
   const path = window.location.pathname;
+
+  console.log("Ruta actual:", path);
 
   if (path !== "/" && path !== "/login" && !isAuthenticated()) {
     history.replaceState({}, "", "/login");
@@ -47,9 +50,12 @@ export function renderRoute() {
   // Si la ruta es "/tasks", configurar la vista de tareas
   if (path === "/tasks") {
   setupTasks();
+  }
+  // Si la ruta es "/tasks/new", configurar el formulario de tareas
+  if (path === "/tasks/new" || path === "/tasks/edit") {
+    setupTaskForm();
+  }
 }
-}
-
 // Escuchar cambios en el historial para renderizar la vista correcta
 window.addEventListener("popstate", renderRoute);
 // Configurar los enlaces para navegar sin recargar la página

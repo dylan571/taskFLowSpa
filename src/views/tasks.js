@@ -19,7 +19,7 @@ export function renderTask() {
           <h1 class="mt-3 text-4xl font-black tracking-tight">Mis tareas</h1>
           <p class="mt-4 max-w-2xl text-blue-50">Vista principal para listar, editar y eliminar las tareas del usuario autenticado.</p>
         </div>
-        <a class="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-blue-700 hover:bg-blue-50" href="/task-form">
+        <a class="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-blue-700 hover:bg-blue-50" href="/tasks/new">
           Crear tarea
         </a>
       </section>
@@ -31,12 +31,12 @@ export function renderTask() {
   </body>`;
 }
 
-import { getTasks } from "../services/taskService.js";
+import { getTasks, deleteTask } from "../services/taskService.js";
 import { storage } from "../utils/storage.js";
+import { navigate } from "../router/router.js";
 
 export async function setupTasks() {
-  const container =
-    document.getElementById("tasksContainer");
+  const container = document.getElementById("tasksContainer");
 
   if (!container) return;
 
@@ -85,4 +85,22 @@ export async function setupTasks() {
       `
     )
     .join("");
+
+    document.querySelectorAll(".edit-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.id;
+
+        navigate(`/tasks/edit?id=${id}`);
+      });
+    });
+
+    document.querySelectorAll(".delete-btn").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const id = button.dataset.id;
+
+        await deleteTask(id);
+        
+        setupTasks();
+      });
+    });
 }

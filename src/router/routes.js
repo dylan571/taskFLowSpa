@@ -18,6 +18,7 @@ export const routes = {
   "/admin": renderAdmin,
   "/register": renderRegister,
   "/home": renderHome,
+  "/tasks/edit": renderTaskForm,
 };
 
 export const notFound = renderFound;
