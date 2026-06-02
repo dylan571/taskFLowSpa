@@ -7,7 +7,7 @@ import { renderTaskForm } from "../views/task-form.js";
 import { renderAdmin } from "../views/admin.js";
 import { renderFound } from "../views/not-found.js";
 import { renderRegister } from "../views/register.js";
-
+// Definimos las rutas de la aplicación, cada ruta corresponde a una función que renderiza la vista correspondiente.
 export const routes = {
   "/": renderHome,
   "/login": renderLogin,

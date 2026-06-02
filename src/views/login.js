@@ -1,5 +1,5 @@
 export function renderLogin() {
-    return `<body class="min-h-screen bg-gradient-to-b from-sky-50 via-white to-blue-100 text-slate-800">
+  return `<body class="min-h-screen bg-gradient-to-b from-sky-50 via-white to-blue-100 text-slate-800">
     <main class="grid min-h-screen lg:grid-cols-[1fr_0.95fr]">
       <section class="flex items-center justify-center px-6 py-10">
         <div class="w-full max-w-xl rounded-[2rem] border border-blue-100 bg-white p-8 shadow-xl shadow-blue-100/70">
@@ -14,18 +14,26 @@ export function renderLogin() {
             <p class="mt-4 text-slate-600">Ingresa a tu espacio de trabajo y continua organizando tus tareas.</p>
           </div>
 
-          <form class="mt-8 grid gap-5">
+          <form id="loginForm" class="mt-8 grid gap-5">
             <div>
               <label class="mb-2 block text-sm font-medium text-slate-700" for="email">Correo</label>
               <input id="email" type="email" placeholder="usuario@taskflow.com" class="w-full rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none" />
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium text-slate-700" for="password">Contrasena</label>
+              <p
+                id="loginError"
+                class="text-sm text-red-500"
+              ></p>
               <input id="password" type="password" placeholder="Ingresa tu contrasena" class="w-full rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none" />
             </div>
-            <a class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500" href="/dashboard">
-              Entrar al dashboard
-            </a>
+            <button
+            id="loginBtn"
+           type="submit"
+           class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500"
+          >
+            Entrar al dashboard
+          </button>
           </form>
         </div>
       </section>
@@ -43,4 +51,37 @@ export function renderLogin() {
       </section>
     </main>
   </body>`;
+}
+
+import { login } from "../services/authService.js";
+import { navigate } from "../router/router.js";
+
+export function setupLogin() {
+  const form =
+    document.getElementById("loginForm");
+// Si el formulario no existe, salir de la función
+  if (!form) return;
+
+  form.addEventListener(
+    "submit",
+    async (e) => {
+      e.preventDefault();
+// Obtener los valores de email y password desde el formulario
+      const email =
+        document.getElementById("email").value;
+
+      const password =
+        document.getElementById("password").value;
+// Intentar iniciar sesión con las credenciales proporcionadas
+      try {
+        await login(email, password);
+// Si el inicio de sesión es exitoso, navegar al dashboard
+        navigate("/dashboard");
+      } catch (error) {
+        document.getElementById(
+          "loginError"
+        ).textContent = error.message;
+      }
+    }
+  );
 }
