@@ -16,3 +16,7 @@ export async function login(email, password) {
 
   return user;
 }
+
+export function logout() {
+  storage.clearSession();
+}

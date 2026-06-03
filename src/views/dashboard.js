@@ -1,5 +1,30 @@
+import { createNavbar } from "../components/navbar.js";
+import { getTasks } from "../services/taskService.js";
+
+export async function setupDashboard() {
+  console.log("Dashboard ejecutado");
+  const session = JSON.parse(localStorage.getItem("session"));
+
+  const tasks = await getTasks();
+
+  const myTasks = tasks.filter((task) => task.userId === Number(session.id));
+
+  const totalTasks = myTasks.length;
+
+  const completedCount = myTasks.filter(
+    (task) => task.status === "Completada",
+  ).length;
+  const pendingCount = myTasks.filter(
+    (task) => task.status !== "Completada",
+  ).length;
+
+  document.getElementById("totalTasks").textContent = totalTasks;
+  document.getElementById("completedTasks").textContent = completedCount;
+  document.getElementById("pendingTasks").textContent = pendingCount;
+}
+
 export function renderDashboard() {
-    return `<body class="min-h-screen bg-sky-50 text-slate-800">
+  return `<body class="min-h-screen bg-sky-50 text-slate-800">
     <header class="border-b border-blue-100 bg-white/90 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a class="text-xl font-black text-blue-900" href="/home">TaskFlowSPA</a>
@@ -8,7 +33,7 @@ export function renderDashboard() {
           <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/tasks">Tareas</a>
           <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/profile">Perfil</a>
           <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/admin">Admin</a>
-          <a class="rounded-full px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50" href="/login">Logout</a>
+          <a class="rounded-full px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50" ${createNavbar()}</a>
         </nav>
       </div>
     </header>
@@ -23,15 +48,15 @@ export function renderDashboard() {
       <section class="mt-8 grid gap-4 md:grid-cols-3">
         <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
           <p class="text-sm text-slate-500">Tareas activas</p>
-          <p class="mt-3 text-4xl font-black text-blue-700">12</p>
+          <p id="totalTasks" class="mt-3 text-4xl font-black text-blue-700">0</p>
         </article>
         <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
           <p class="text-sm text-slate-500">Completadas</p>
-          <p class="mt-3 text-4xl font-black text-blue-700">28</p>
+          <p id="completedTasks" class="mt-3 text-4xl font-black text-blue-700">0</p>
         </article>
         <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
           <p class="text-sm text-slate-500">Pendientes hoy</p>
-          <p class="mt-3 text-4xl font-black text-blue-700">4</p>
+          <p id="pendingTasks" class="mt-3 text-4xl font-black text-blue-700">0</p>
         </article>
       </section>
 

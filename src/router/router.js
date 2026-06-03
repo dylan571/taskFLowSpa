@@ -4,6 +4,8 @@ import { isAuthenticated, isAdmin } from "./guards.js";
 import { setupLogin } from "../views/login.js";
 import { setupTasks } from "../views/tasks.js";
 import { setupTaskForm } from "../views/task-form.js";
+import { setupNavbar } from "../components/navbar.js";
+import { setupDashboard } from "../views/dashboard.js";
 
 const app = document.getElementById("app");
 // Función para navegar a una ruta específica
@@ -14,8 +16,6 @@ export function navigate(path) {
 // Función para renderizar la vista correspondiente a la ruta actual
 export function renderRoute() {
   const path = window.location.pathname;
-
-  console.log("Ruta actual:", path);
 
   if (path !== "/" && path !== "/login" && !isAuthenticated()) {
     history.replaceState({}, "", "/login");
@@ -43,6 +43,7 @@ export function renderRoute() {
   app.innerHTML = view();
 
   setupLinks();
+  setupNavbar();
   // Si la ruta es "/login", configurar el formulario de inicio de sesión
   if (path === "/login") {
     setupLogin();
@@ -54,6 +55,9 @@ export function renderRoute() {
   // Si la ruta es "/tasks/new", configurar el formulario de tareas
   if (path === "/tasks/new" || path === "/tasks/edit") {
     setupTaskForm();
+  }
+  if (path === "/dashboard") {
+    setupDashboard();
   }
 }
 // Escuchar cambios en el historial para renderizar la vista correcta

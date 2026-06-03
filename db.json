@@ -8,6 +8,16 @@
       "role": "ADMIN"
     }
   ],
-  "tasks": [],
+  "tasks": [
+    {
+      "title": "12312",
+      "description": "12314",
+      "completed": false,
+      "status": "Pendiente",
+      "date": "2026-06-19",
+      "userId": 1,
+      "id": "lRp2fhRHL3I"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
